@@ -1,70 +1,37 @@
 import { useState } from "react";
+import ExpenseInput from "./components/ExpenseInput";
+import ExpenseList from "./components/ExpenseList";
+import { parseExpense } from "./utils/parseExpense";
 
 function App() {
-  const [input, setInput] = useState("");
   const [expenses, setExpenses] = useState([]);
 
-  const handleAddExpense = () => {
-    if (!input.trim()) return;
+  const handleAddExpense = (text) => {
+    const amount = parseExpense(text);
 
-    // استخراج أول رقم موجود في النص
-    const amountMatch = input.match(/\d+/);
-
-    if (!amountMatch) {
-      alert("Please include an amount in your note.");
+    if (!amount) {
+      alert("Please include a valid amount in your note.");
       return;
     }
 
-    const amount = parseFloat(amountMatch[0]);
-
     const newExpense = {
       id: Date.now(),
-      text: input,
-      amount: amount,
+      text,
+      amount,
     };
 
-    setExpenses([...expenses, newExpense]);
-    setInput("");
+    setExpenses((prev) => [...prev, newExpense]);
   };
 
   return (
     <div className="min-h-screen bg-gray-100 p-10">
-      <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow">
-
-        <h1 className="text-2xl font-bold mb-4">
+      <div className="max-w-xl mx-auto bg-white p-6 rounded-lg shadow space-y-4">
+        <h1 className="text-2xl font-bold">
           Smart Expense Notes
         </h1>
 
-        {/* Input Section */}
-        <div className="flex gap-2 mb-4">
-          <input
-            type="text"
-            placeholder="e.g. Coffee 25"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            className="flex-1 border p-2 rounded"
-          />
-          <button
-            onClick={handleAddExpense}
-            className="bg-blue-600 text-white px-4 py-2 rounded"
-          >
-            Add
-          </button>
-        </div>
-
-        {/* Expense List */}
-        <ul className="space-y-2">
-          {expenses.map((expense) => (
-            <li
-              key={expense.id}
-              className="flex justify-between bg-gray-50 p-2 rounded"
-            >
-              <span>{expense.text}</span>
-              <span className="font-semibold">${expense.amount}</span>
-            </li>
-          ))}
-        </ul>
-
+        <ExpenseInput onAddExpense={handleAddExpense} />
+        <ExpenseList expenses={expenses} />
       </div>
     </div>
   );
