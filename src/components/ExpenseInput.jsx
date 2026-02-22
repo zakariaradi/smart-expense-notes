@@ -24,12 +24,10 @@ export default function ExpenseInput({ onAddExpense }) {
         placeholder="e.g. Coffee 25"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        className="w-full border rounded p-2 focus:outline-none focus:ring"
+        className="w-full border p-2 rounded"
       />
 
-      {error && (
-        <p className="text-red-500 text-sm">{error}</p>
-      )}
+      {error && <p className="text-red-500 text-sm">{error}</p>}
 
       <button
         type="submit"

@@ -12,10 +12,7 @@ export default function ExpenseList({ expenses }) {
   return (
     <div className="space-y-2">
       {expenses.map((expense) => (
-        <ExpenseItem
-          key={expense.id}
-          expense={expense}
-        />
+        <ExpenseItem key={expense.id} expense={expense} />
       ))}
     </div>
   );
